@@ -1,0 +1,11 @@
+---
+- hosts: "{{ servidores }}"
+  become: true
+  vars:
+    nombre: joan
+  tasks:
+  - name: mostramos contenido de variable
+    debug:
+      msg:
+      - "nombre: {{ nombre }}"
+      

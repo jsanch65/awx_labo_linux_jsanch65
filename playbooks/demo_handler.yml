@@ -1,0 +1,15 @@
+---
+- hosts:"{{ servidores }}"
+  become: true
+  tasks:
+  - name:
+    file:
+      path: /opt/www
+      state: directory
+  - name: cambiar la config de httpd.conf
+    replace:
+      path: /etc/httpd/conf/httpd.conf
+      regexp: '^DocumentRoot.*$'
+      replace: 'DocumentRoot "/opt/www"'
+      backup: yes
+    notify: "restart web"

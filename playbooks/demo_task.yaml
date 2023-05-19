@@ -1,0 +1,36 @@
+---
+# Metemos el host o grupo de hosts al que le queremos ejecutar el play book
+- hosts: linux06  #puedes poner el grupo que se aplico en el archivo inv.ini
+  become: true          # Aplicar los permisos de root a todas las acciones poniendolo en este lugar
+  tasks:
+  # Instalacion de apache
+  - name: instalamos apache   # Etiqueta
+    package:
+      name: httpd       # Nombre servicio
+      state: present  
+  # Inicio del servicio de apache (httpd) y ponerlo en modo enabled para que asi se inicie al reiniciar el servidor
+  - name: iniciamos httpd y lo dejamos persiste reboot  # Etiqueta
+    service:            # Etiqueta del Servicio
+      name: httpd       # Servicio
+      state: started    # Estado del servicio
+      enabled: yes      # Modo Enabled = yes
+      tags: install
+  # Pagina personalizada de inicio para apache
+  - name: pagina de bienvenida del apache # Etiqueta
+    copy: 
+      dest: /var/www/html/index.html  # Ruta de destino
+      content: |        # Contenido del archivo, poniendo el | aplica el conjunto y lo coge todo como este escrito
+        <html>
+        <body>
+        <h1>Its Works!</h1>
+        Que bonito!
+        Que precioso!
+        Viva el betis!
+        </body>
+        </html>
+    tags: config
+  - name: Desinstalar apache
+    package:
+      name: httpd
+      state: absent
+    tags: uninstall

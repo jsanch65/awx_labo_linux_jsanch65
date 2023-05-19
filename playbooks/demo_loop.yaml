@@ -1,0 +1,16 @@
+---
+- hosts: "{{ servidores }}"
+  become: true
+  tasks:
+  - name: crear usuario
+    user:
+      name: "{{ item }}" # item es una variabel especial que se pone cuando esta el modulo with_items
+      groups:
+      shell: "/bin/bash"
+      comment: "usuario creado por ansible"
+      state: present
+    with_items:
+      - {usuario: 'pepe', equipo: 'wheel'}     #Hay primero que crear los grupos para poder añadir los usuarios a ese grupo
+      - {usuario: 'juan', equipo: 'wheel'}
+      - {usuario: 'leti', equipo: 'linux'}
+      - {usuario: 'abril', equipo: 'Users'}

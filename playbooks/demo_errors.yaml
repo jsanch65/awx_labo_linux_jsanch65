@@ -1,0 +1,12 @@
+---
+- hosts: "{{ servidores }}"
+  become: true
+  gather_facts: no
+  tasks:
+  - name: validamos conexion web
+    uri:
+      url: "http://localhost"
+    ignore_errors: true
+  - name: mostrar mensaje
+    debug:
+      msg: "La terea fue bien"
